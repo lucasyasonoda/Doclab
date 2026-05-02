@@ -37,7 +37,7 @@
 <footer class="site-footer">
   <class="container">
     <div class="footer-grid">
-      <div>
+      <div class="footer-brand">
         <a href="../index.html" class="logo" style="margin-bottom:1rem;">
           <span class="logo-mark" aria-hidden="true">DL</span>
           <span class="logo-text" style="color:#fff;">Doc Lab</span>

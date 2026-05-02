@@ -13,11 +13,23 @@
     toggle.addEventListener('click', () => {
       const open = navLinks.classList.toggle('nav-open');
       toggle.setAttribute('aria-expanded', open);
+      document.body.style.overflow = open ? 'hidden' : '';
     });
 
     /* close on link click */
     navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => navLinks.classList.remove('nav-open'));
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('nav-open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    /* close on outside click */
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+        navLinks.classList.remove('nav-open');
+        document.body.style.overflow = '';
+      }
     });
   }
 
