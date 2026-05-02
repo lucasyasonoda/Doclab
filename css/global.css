@@ -302,6 +302,58 @@ h1, h2, h3, h4, h5 {
     margin-inline: auto;
   }
 
+  /* ── WhatsApp flutuante ── */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,.45);
+  z-index: 200;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.wa-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37,211,102,.55);
+}
+
+.wa-tooltip {
+  position: absolute;
+  right: 68px;
+  background: var(--navy-dark);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .4rem .9rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.wa-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: var(--navy-dark);
+}
+  
+.wa-float:hover .wa-tooltip {
+  opacity: 1;
+}
+
 @media (max-width: 600px) {
   .section { padding-block: 3.5rem; }
 
