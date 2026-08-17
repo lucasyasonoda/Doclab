@@ -1,5 +1,5 @@
 /* ==========================================
-   DOC LAB — Shared Layout (header + footer)
+   DOC.LAB — Shared Layout (header + footer)
    Injetado via JS em todas as páginas
    ========================================== */
 
@@ -10,20 +10,21 @@
   const headerHTML = `
 <header class="site-header">
   <nav class="container">
-    <a href="../index.html" class="logo" aria-label="Doc Lab — página inicial">
+    <a href="../index.html" class="logo" aria-label="Doc.Lab — página inicial">
       <span class="logo-mark" aria-hidden="true">DL</span>
-      <span class="logo-text">Doc Lab</span>
+      <span class="logo-text">Doc.Lab</span>
     </a>
 
     <ul class="nav-links" role="list">
-      <li><a href="../pages/servicos.html">Serviços</a></li>
-      <li><a href="../pages/cases.html">Cases</a></li>
+      <li><a href="../pages/servicos.html">Soluções</a></li>
       <li><a href="../pages/sobre.html">Sobre</a></li>
+      <li><a href="../pages/blog.html">Blog</a></li>
+      <li><a href="../pages/cases.html">Cases</a></li>
       <li><a href="../pages/contato.html">Contato</a></li>
     </ul>
 
-    <a href="../pages/contato.html" class="btn btn-primary" style="display:none;" id="nav-cta">
-      Falar com a gente
+    <a href="../pages/orcamento.html" class="btn btn-primary" style="display:none;" id="nav-cta">
+      Solicitar Orçamento
     </a>
 
     <button class="nav-mobile-toggle" aria-label="Abrir menu" aria-expanded="false">
@@ -35,41 +36,46 @@
   /* ── Footer ── */
   const footerHTML = `
 <footer class="site-footer">
-  <class="container">
+  <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="../index.html" class="logo" style="margin-bottom:1rem;">
           <span class="logo-mark" aria-hidden="true">DL</span>
-          <span class="logo-text" style="color:#fff;">Doc Lab</span>
+          <span class="logo-text" style="color:#fff;">Doc.Lab</span>
         </a>
         <p style="font-size:.9rem;max-width:220px;">
-          Marketing digital especializado para médicos e clínicas.
+          Agência de marketing ético para saúde. Comunicação estratégica para médicos, clínicas e profissionais da saúde.
         </p>
       </div>
 
-      <nav class="footer-links" aria-label="Serviços">
-        <h4>Serviços</h4>
-        <a href="../pages/servicos.html#social-media">Social Media</a>
-        <a href="../pages/servicos.html#websites">Websites</a>
-        <a href="../pages/servicos.html#branding">Branding</a>
-        <a href="../pages/servicos.html#estrategia">Estratégia Digital</a>
+      <nav class="footer-links" aria-label="Soluções">
+        <h4>Soluções</h4>
+        <a href="../pages/servicos.html#presenca-digital">Presença Digital</a>
+        <a href="../pages/servicos.html#trafego-pago">Tráfego Pago</a>
+        <a href="../pages/servicos.html#branding">Posicionamento e Branding</a>
+        <a href="../pages/servicos.html#sites">Sites de Alta Conversão</a>
+        <a href="../pages/servicos.html#consultoria">Consultoria Ética</a>
+        <a href="../pages/servicos.html#assessoria-imprensa">Assessoria de Imprensa</a>
+        <a href="../pages/servicos.html#treinamento-equipe">Treinamento de Equipe</a>
       </nav>
 
       <nav class="footer-links" aria-label="Empresa">
         <h4>Empresa</h4>
         <a href="../pages/sobre.html">Sobre nós</a>
+        <a href="../pages/blog.html">Blog</a>
         <a href="../pages/cases.html">Cases</a>
+        <a href="../pages/orcamento.html">Orçamento</a>
         <a href="../pages/contato.html">Contato</a>
       </nav>
 
       <address class="footer-links">
         <h4>Contato</h4>
-        <a href="mailto:contato@doclab.com.br">contato@doclab.com.br</a>
+        <a href="mailto:contato@doclabsaude.com.br">contato@doclabsaude.com.br</a>
         <a href="https://wa.me/5515997961512" target="_blank" rel="noopener">
           WhatsApp: (15) 99796-1512
         </a>
-        <a href="https://instagram.com/doclab" target="_blank" rel="noopener">
-          @doclab
+        <a href="https://instagram.com/doclabagencia" target="_blank" rel="noopener">
+          @doclabagencia
         </a>
       </address>
 
@@ -84,19 +90,17 @@
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Localização Padaria Real"
-        ></iframe>  
+            title="Localização Doc.Lab"
+        ></iframe>
           <figcaption>
-            <a href="https://maps.google.com/?q=Av.+Moreira+César,+334,+Centro,+Sorocaba,+SP" target="_blank" rel="noopener">
-              Av. Moreira César, 334 — Centro, Sorocaba/SP
-            </a>
+            Atendimento remoto em todo o Brasil. Reuniões presenciais em São Paulo, SP mediante agendamento.
           </figcaption>
         </figure>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; <span id="footer-year"></span> Doc Lab. Todos os direitos reservados. Desenvolvido por <a href="#" style="color:var(--cyan);">L&amp;L Tech</a></p>
+      <p>&copy; <span id="footer-year"></span> Doc.Lab Agência de Marketing em Saúde. Todos os direitos reservados. &nbsp;|&nbsp; <a href="../pages/privacidade.html" style="color:var(--cyan);">Política de Privacidade</a> &nbsp;|&nbsp; <a href="../pages/termos.html" style="color:var(--cyan);">Termos de Uso</a></p>
     </div>
   </div>
 </footer>`;

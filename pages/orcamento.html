@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Solicite um orçamento gratuito com a Doc.Lab — consultoria inicial sem compromisso para profissionais e clínicas de saúde." />
+  <title>Orçamento — Doc.Lab</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/inner-pages.css" />
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <main class="page-offset">
+
+    <!-- ══ PAGE HERO ══ -->
+    <section class="page-hero">
+      <div class="container page-hero-content" data-reveal>
+        <span class="section-tag">Orçamento</span>
+        <h1>Vamos construir juntos a sua<br><em class="grad-text">presença digital</em></h1>
+        <p>Preencha o formulário e um especialista da Doc.Lab entrará em contato em até 24 horas para uma conversa sem compromisso — focada no momento da sua carreira e nos seus objetivos.</p>
+      </div>
+    </section>
+
+    <!-- ══ GRID ══ -->
+    <section class="section" style="background:#fff;">
+      <div class="container contact-grid">
+
+        <!-- Formulário -->
+        <article class="contact-form-wrap" data-reveal>
+          <h2>Solicite seu orçamento</h2>
+          <p style="margin-bottom:2rem;color:var(--gray-500);">Consultoria inicial gratuita e sem compromisso de contratação.</p>
+
+          <form class="contact-form" id="budget-form" novalidate>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="name">Nome completo *</label>
+                <input type="text" id="name" name="name" autocomplete="name" required placeholder="Dra. Ana Silva" />
+              </div>
+              <div class="form-field">
+                <label for="crm">CRM / Registro profissional</label>
+                <input type="text" id="crm" name="crm" placeholder="Ex: CRM-SP 000000" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="email">E-mail profissional *</label>
+                <input type="email" id="email" name="email" autocomplete="email" required placeholder="voce@clinica.com.br" />
+              </div>
+              <div class="form-field">
+                <label for="phone">WhatsApp *</label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel" required placeholder="(11) 99999-9999" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="specialty">Qual sua especialidade? *</label>
+                <input type="text" id="specialty" name="specialty" required placeholder="Ex: Dermatologia" />
+              </div>
+              <div class="form-field">
+                <label for="city">Cidade / Estado *</label>
+                <input type="text" id="city" name="city" required placeholder="Ex: Sorocaba/SP" />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="goal">Qual seu principal objetivo agora? *</label>
+              <select id="goal" name="goal" required>
+                <option value="">Selecione uma opção</option>
+                <option value="presenca-digital">Gestão de Presença Digital</option>
+                <option value="trafego-pago">Tráfego Pago para Saúde</option>
+                <option value="branding">Posicionamento e Branding</option>
+                <option value="sites">Site de Alta Conversão</option>
+                <option value="consultoria">Consultoria de Marketing Ético</option>
+                <option value="assessoria-imprensa">Assessoria de Imprensa</option>
+                <option value="treinamento-equipe">Treinamento de Equipe</option>
+                <option value="nao-sei">Ainda não sei — quero orientação</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="context">Descreva o momento atual do seu consultório/clínica</label>
+              <textarea id="context" name="context" rows="4" placeholder="Conte um pouco sobre onde você está hoje e o que gostaria de alcançar..."></textarea>
+            </div>
+
+            <div class="form-field">
+              <label for="budget">Qual o seu orçamento estimado para marketing? (opcional)</label>
+              <input type="text" id="budget" name="budget" placeholder="Ex: R$ 1.500 a R$ 3.000/mês" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+              Enviar solicitação
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+
+            <p class="form-notice">
+              Ao enviar, você concorda com nossa <a href="privacidade.html">Política de Privacidade</a>.
+            </p>
+
+            <div class="form-success" id="form-success" hidden role="alert">
+              ✅ Solicitação enviada! Em breve entraremos em contato.
+            </div>
+          </form>
+        </article>
+
+        <!-- O que acontece na consultoria -->
+        <aside class="contact-info" data-reveal data-delay="2">
+          <h2>O que acontece na consultoria gratuita</h2>
+
+          <ol class="process-steps" role="list" style="margin-bottom:2.5rem;">
+            <li>
+              <div>
+                <strong>Diagnóstico da sua situação atual</strong>
+                <p>O que já existe, o que falta e quais são as maiores oportunidades.</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Alinhamento de objetivos</strong>
+                <p>O que é sucesso para você: mais pacientes, maior autoridade ou posicionamento.</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Indicação das melhores soluções</strong>
+                <p>Com base no seu perfil e nos seus objetivos.</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Proposta personalizada</strong>
+                <p>Escopo, prazos e investimento, sem contratos longos obrigatórios.</p>
+              </div>
+            </li>
+          </ol>
+
+          <article class="contact-cta-card">
+            <h3>Incluído sem custo</h3>
+            <p>Consultoria inicial de 30 minutos, diagnóstico da sua presença digital atual, indicação das normas éticas para a sua especialidade e proposta personalizada — sem nenhum compromisso de contratação.</p>
+            <a href="https://wa.me/5515997961512?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn btn-primary">
+              Falar pelo WhatsApp
+            </a>
+          </article>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/layout.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    /* ── Form feedback (demo — sem backend) ── */
+    const form = document.getElementById('budget-form');
+    const success = document.getElementById('form-success');
+
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const required = form.querySelectorAll('[required]');
+        let valid = true;
+
+        required.forEach(field => {
+          field.classList.remove('invalid');
+          if (!field.value.trim()) {
+            field.classList.add('invalid');
+            valid = false;
+          }
+        });
+
+        if (!valid) return;
+
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Enviando…';
+
+        setTimeout(() => {
+          form.reset();
+          btn.style.display = 'none';
+          success.hidden = false;
+        }, 1200);
+      });
+    }
+  </script>
+</body>
+</html>
