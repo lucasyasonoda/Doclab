@@ -217,7 +217,7 @@ function Home() {
               >
                 <header className="flex items-center gap-3">
                   <figure aria-hidden className="text-3xl">
-                    👩‍⚕️
+                    ✦
                   </figure>
                   <hgroup>
                     <h3 className="font-display font-semibold text-navy">{t.name}</h3>

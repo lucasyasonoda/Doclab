@@ -65,7 +65,7 @@ function Cases() {
               >
                 <header className="flex items-center gap-3">
                   <figure aria-hidden className="text-3xl">
-                    {c.role.includes("Dra.") || c.name.startsWith("Dra") ? "👩‍⚕️" : "👨‍⚕️"}
+                    ✦
                   </figure>
                   <hgroup>
                     <h3 className="font-display font-semibold text-navy">{c.name}</h3>
