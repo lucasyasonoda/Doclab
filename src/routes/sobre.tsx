@@ -45,11 +45,8 @@ function Sobre() {
               key={m.title}
               className="card-surface p-8 text-center md:text-left"
             >
-              <span className={`icon-box ${m.iconBox} mx-auto md:mx-0`} aria-hidden>
-                {m.icon}
-              </span>
-              <h3 className="mt-5 font-display text-lg font-semibold text-navy">{m.title}</h3>
-              <p className="mt-3 text-sm text-gray-700">{m.body}</p>
+              <h3 className="card-text__title">{m.title}</h3>
+              <p className="card-text__body mt-3">{m.body}</p>
             </Reveal>
           ))}
         </div>
@@ -109,11 +106,8 @@ function Sobre() {
                 key={v.title}
                 className="card-surface p-8"
               >
-                <span className={`icon-box ${v.iconBox}`} aria-hidden>
-                  {v.icon}
-                </span>
-                <h3 className="mt-5 font-display text-lg font-semibold text-navy">{v.title}</h3>
-                <p className="mt-3 text-sm text-gray-700">{v.body}</p>
+                <h3 className="card-text__title">{v.title}</h3>
+                <p className="card-text__body mt-3">{v.body}</p>
               </Reveal>
             ))}
           </div>
@@ -142,12 +136,9 @@ function Sobre() {
                 key={member.name}
                 className="card-surface p-8 text-center"
               >
-                <figure aria-hidden className="text-4xl">
-                  {member.icon}
-                </figure>
-                <h3 className="mt-4 font-display text-lg font-semibold text-navy">{member.name}</h3>
-                <p className="mt-1 text-sm font-medium text-cyan-dark">{member.role}</p>
-                <p className="mt-3 text-sm text-gray-700">{member.bio}</p>
+                <h3 className="card-text__title card-text__title--navy mt-2">{member.name}</h3>
+                <p className="card-text__body mt-1">{member.role}</p>
+                <p className="card-text__body mt-2 text-sm text-gray-500">{member.bio}</p>
               </Reveal>
             ))}
           </ul>

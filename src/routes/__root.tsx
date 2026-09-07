@@ -130,6 +130,15 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <head>
         <HeadContent />
+        {/* Fallback: se o JS client-side falhar (ex: client-entry, hidratação),
+            o conteúdo das páginas continua visível em vez de ficar invisível por
+            [data-reveal] { opacity: 0 }. O ideal é que Raresult um erro no client, mas
+            como medida de segurança adicionamos este fallback. */}
+        <noscript>
+          <style>{`
+            [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+          `}</style>
+        </noscript>
       </head>
       <body>
         {META_PIXEL_ID && (

@@ -4,7 +4,6 @@ import { Reveal } from "@/components/site/Reveal";
 import {
   DIFFERENTIALS,
   HERO_IMAGE_URL,
-  HERO_STATS,
   HOME_BLOG_PREVIEWS,
   HOME_TESTIMONIALS,
   WHY_US,
@@ -58,7 +57,7 @@ function Home() {
               className="mt-6 font-display text-[clamp(2.1rem,5vw,3.4rem)] font-bold leading-[1.1] text-navy"
             >
               Sua presença digital no nível da sua{" "}
-              <span className="grad-text">excelência clínica</span>
+              <span className="grad-text">excelência médica</span>
             </Reveal>
             <Reveal as="p" delay={2} className="mt-6 max-w-xl text-gray-700">
               A Doc.Lab é uma agência de comunicação e marketing criada exclusivamente para
@@ -85,15 +84,6 @@ function Home() {
               <span className="badge badge-cyan">CFM-compliance</span>
               <span className="badge badge-purple">100% Ético</span>
               <span className="badge badge-cyan">Especialistas em Saúde</span>
-            </Reveal>
-
-            <Reveal as="dl" delay={4} className="mt-10 grid grid-cols-3 gap-6">
-              {HERO_STATS.map((s) => (
-                <div key={s.l}>
-                  <dt className="font-display text-2xl font-bold text-navy md:text-3xl">{s.n}</dt>
-                  <dd className="mt-1 text-xs text-gray-700 md:text-sm">{s.l}</dd>
-                </div>
-              ))}
             </Reveal>
           </div>
 
@@ -131,16 +121,13 @@ function Home() {
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
             {DIFFERENTIALS.map((d, i) => (
               <Reveal
-                as="li"
+                as="article"
                 delay={((i % 4) + 1) as 1 | 2 | 3 | 4}
                 key={d.title}
                 className="card-surface p-8"
               >
-                <span className={`icon-box ${d.iconBox}`} aria-hidden>
-                  {d.icon}
-                </span>
-                <h3 className="mt-5 font-display text-lg font-semibold text-navy">{d.title}</h3>
-                <p className="mt-3 text-sm text-gray-700">{d.body}</p>
+                <h3 className="card-text__title">{d.title}</h3>
+                <p className="card-text__body mt-3">{d.body}</p>
               </Reveal>
             ))}
           </ul>
@@ -176,12 +163,9 @@ function Home() {
             <ul className="mt-8 space-y-6" role="list">
               {WHY_US.map((w) => (
                 <li key={w.title} className="flex gap-4">
-                  <span className={`icon-box ${w.iconBox} shrink-0`} aria-hidden>
-                    {w.icon}
-                  </span>
-                  <div>
-                    <h3 className="font-display text-lg font-semibold text-navy">{w.title}</h3>
-                    <p className="mt-1.5 text-sm text-gray-700">{w.body}</p>
+                  <div className="flex flex-col">
+                    <h3 className="card-text__title card-text__title--navy">{w.title}</h3>
+                    <p className="card-text__body mt-1 text-sm">{w.body}</p>
                   </div>
                 </li>
               ))}

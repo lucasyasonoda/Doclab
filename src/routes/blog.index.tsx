@@ -2,9 +2,27 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
+import { supabaseServer } from "@/lib/supabase-server";
+import { subscribeNewsletter } from "./-subscribe-newsletter";
 import { BLOG_ARTICLES } from "@/content/site";
+import type { BlogArticle } from "@/content/site";
 
 export const Route = createFileRoute("/blog/")({
+  loader: async () => {
+    try {
+      const { data, error } = await supabaseServer
+        .from("blog_articles")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      return (data ?? []) as BlogArticle[];
+    } catch {
+      // Fallback: usa dados estáticos durante build ou se Supabase indisponível
+      return BLOG_ARTICLES;
+    }
+  },
   head: () => ({
     meta: [
       { title: "Blog — Doc.Lab" },
@@ -22,34 +40,75 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function NewsletterForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
-    e.currentTarget.reset();
+    setState("loading");
+    setErrorMsg("");
+
+    const formData = new FormData(e.currentTarget);
+    const raw = formData.get("email");
+    const email = typeof raw === "string" ? raw.trim() : "";
+
+    if (!email) {
+      setState("error");
+      setErrorMsg("Preencha o e-mail.");
+      return;
+    }
+
+    try {
+      const result = await subscribeNewsletter({ data: { email } });
+      if (result?.success) {
+        setState("success");
+        e.currentTarget.reset();
+      } else {
+        setState("error");
+        setErrorMsg(result?.message || result?.error || "Não deu certo. Tente novamente.");
+      }
+    } catch (err) {
+      setState("error");
+      const msg = err && typeof err === "object" && "message" in err ? (err.message as string) : String(err);
+      setErrorMsg(msg || "Não deu certo. Tente novamente.");
+      console.error("[Newsletter] error:", err);
+    }
   }
 
   return (
     <form className="mt-8 flex flex-col gap-3 sm:flex-row" onSubmit={handleSubmit}>
       <input
+        name="email"
         type="email"
-        placeholder="Seu melhor e-mail"
         required
         aria-label="E-mail para newsletter"
-        className="w-full flex-1 rounded-lg border-0 px-5 py-3.5 text-navy focus:outline-none focus:ring-2 focus:ring-cyan"
+        className="w-full flex-1 rounded-lg border-0 bg-white/10 px-5 py-3.5 text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 focus:ring-2 focus:ring-cyan disabled:bg-gray-100 disabled:cursor-not-allowed"
+        disabled={state === "loading" || state === "success"}
+        placeholder="Seu melhor e-mail"
       />
       <button
         type="submit"
         className="btn-primary bg-white !text-navy hover:!bg-gray-100 justify-center"
+        disabled={state === "loading" || state === "success"}
       >
-        {submitted ? "Inscrição recebida ✓" : "Quero receber"}
+        {state === "success"
+          ? "Inscrito com sucesso ✓"
+          : state === "loading"
+            ? "Enviando..."
+            : state === "error"
+              ? "Tentar novamente"
+              : "Quero receber"}
       </button>
+      {state === "error" && errorMsg && (
+        <p className="text-sm text-red-300 sm:col-span-2 text-center">{errorMsg}</p>
+      )}
     </form>
   );
 }
 
 function Blog() {
+  const articles = Route.useLoaderData();
+
   return (
     <>
       <PageHero
@@ -66,16 +125,16 @@ function Blog() {
 
       <section className="bg-white py-16 md:py-20">
         <ul className="container-edit grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list">
-          {BLOG_ARTICLES.map((article, i) => (
+          {articles.map((article) => (
             <Reveal
               as="li"
-              delay={((i % 4) + 1) as 1 | 2 | 3 | 4}
-              key={article.title}
+              delay={((articles.indexOf(article) % 4) + 1) as 1 | 2 | 3 | 4}
+              key={article.slug}
               className="card-surface flex flex-col p-8"
             >
               <div className="flex items-center justify-between gap-3">
                 <span className={`badge badge-${article.badge}`}>{article.category}</span>
-                <span className="text-xs text-gray-500">{article.readTime}</span>
+                <span className="text-xs text-gray-500">{article.read_time}</span>
               </div>
               <h3 className="mt-4 flex-1 font-display text-lg font-semibold leading-snug text-navy">
                 {article.slug ? (

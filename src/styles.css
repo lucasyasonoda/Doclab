@@ -55,6 +55,7 @@
   --gray-500: #9a9a95;
   --gray-700: #555550;
   --yellow: #f5c842;
+  --navy-soft: #3a5a80;
 
   --background: var(--white);
   --foreground: var(--gray-700);
@@ -122,31 +123,71 @@
     margin-bottom: 0.75rem;
   }
 
-  .icon-box {
-    width: 56px;
-    height: 56px;
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 1.4rem;
+  .value-card {
+    padding: 1.75rem 1.5rem;
+    border-left: 3px solid var(--navy-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: transparent;
+    transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .icon-box-cyan {
-    background: linear-gradient(135deg, #4fbbc6, #2da0ac);
-    color: #fff;
+  .value-card:hover {
+    background: var(--gray-100);
   }
-  .icon-box-purple {
-    background: linear-gradient(135deg, #8b61c2, #6f4aaa);
-    color: #fff;
+  .value-card__title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
   }
-  .icon-box-blue {
-    background: linear-gradient(135deg, #4b6cb7, #3a5a9e);
-    color: #fff;
+  .value-card__body {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gray-700);
+    font-weight: 400;
   }
-  .icon-box-grad {
-    background: linear-gradient(135deg, #4fbbc6, #8b61c2);
-    color: #fff;
+  .value-card--subtitle .value-card__title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--navy-dark);
+  }
+  .value-card--italic .value-card__title {
+    font-style: italic;
+    font-weight: 600;
+  }
+  .value-card--italic .value-card__title em {
+    font-style: normal;
+  }
+
+  .card-text {
+    display: block;
+  }
+  .card-text__title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.4rem;
+  }
+  .card-text__body {
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--gray-700);
+    margin: 0;
+  }
+  .card-text__title--xl {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .card-text__title--navy {
+    color: var(--navy);
+    font-size: 1.1rem;
+    font-weight: 600;
   }
 
   .badge {
