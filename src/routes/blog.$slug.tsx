@@ -1,13 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
-import { supabaseServer } from "@/lib/supabase-server";
+import { getSupabaseServer } from "@/lib/supabase-server";
 import { BLOG_ARTICLES } from "@/content/site";
 import type { BlogArticle } from "@/content/site";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     try {
-      const { data, error } = await supabaseServer
+      const { data, error } = await getSupabaseServer()
         .from("blog_articles")
         .select("*")
         .eq("slug", params.slug)

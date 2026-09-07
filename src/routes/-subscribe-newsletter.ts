@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { supabaseServer } from "@/lib/supabase-server";
+import { getSupabaseServer } from "@/lib/supabase-server";
 import { sendNewsletterEmail } from "./-send-newsletter";
 
 export const subscribeNewsletter = createServerFn({ method: "POST" })
@@ -15,7 +15,7 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const email = data.email;
 
-    const { data: existing, error: checkError } = await supabaseServer
+    const { data: existing, error: checkError } = await getSupabaseServer()
       .from("newsletter_subscribers")
       .select("id")
       .eq("email", email)
@@ -29,7 +29,7 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
       return { success: true, message: "Você já está inscrito!" };
     }
 
-    const { error: insertError } = await supabaseServer
+    const { error: insertError } = await getSupabaseServer()
       .from("newsletter_subscribers")
       .insert({ email });
 

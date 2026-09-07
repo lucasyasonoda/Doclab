@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
-import { supabaseServer } from "@/lib/supabase-server";
+import { getSupabaseServer } from "@/lib/supabase-server";
 import { subscribeNewsletter } from "./-subscribe-newsletter";
 import { BLOG_ARTICLES } from "@/content/site";
 import type { BlogArticle } from "@/content/site";
@@ -10,7 +10,7 @@ import type { BlogArticle } from "@/content/site";
 export const Route = createFileRoute("/blog/")({
   loader: async () => {
     try {
-      const { data, error } = await supabaseServer
+      const { data, error } = await getSupabaseServer()
         .from("blog_articles")
         .select("*")
         .eq("published", true)

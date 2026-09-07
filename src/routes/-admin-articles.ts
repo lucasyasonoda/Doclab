@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { supabaseServer } from "@/lib/supabase-server";
+import { getSupabaseServer } from "@/lib/supabase-server";
 import { sendNewsletterToAllSubscribers } from "./-send-newsletter";
 import { requireAdminSession } from "./-admin-auth";
 import type { BlogArticle } from "@/content/site";
@@ -7,7 +7,7 @@ import type { BlogArticle } from "@/content/site";
 export const getAdminArticles = createServerFn({ method: "GET" })
   .handler(async () => {
     await requireAdminSession();
-    const { data, error } = await supabaseServer
+    const { data, error } = await getSupabaseServer()
       .from("blog_articles")
       .select("*")
       .order("created_at", { ascending: false });
@@ -38,7 +38,7 @@ export const createArticle = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     await requireAdminSession();
-    const { error } = await supabaseServer.from("blog_articles").insert({
+    const { error } = await getSupabaseServer().from("blog_articles").insert({
       slug: data.slug,
       badge: data.badge,
       category: data.category,
@@ -86,7 +86,7 @@ export const updateArticle = createServerFn({ method: "POST" })
     if (data.author !== undefined) updates.author = data.author;
     if (data.content !== undefined) updates.content = data.content;
     if (data.published !== undefined) updates.published = data.published;
-    const { error } = await supabaseServer.from("blog_articles").update(updates).eq("id", data.id as number);
+    const { error } = await getSupabaseServer().from("blog_articles").update(updates).eq("id", data.id as number);
     if (error) throw error;
     return { success: true };
   });
@@ -102,7 +102,7 @@ export const deleteArticle = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     await requireAdminSession();
-    const { error } = await supabaseServer.from("blog_articles").delete().eq("id", data.id as number);
+    const { error } = await getSupabaseServer().from("blog_articles").delete().eq("id", data.id as number);
     if (error) throw error;
     return { success: true };
   });
@@ -124,7 +124,7 @@ export const publishArticleAndNotify = createServerFn({ method: "POST" })
     await requireAdminSession();
 
     // Marca como publicado
-    const { error: updateError } = await supabaseServer
+    const { error: updateError } = await getSupabaseServer()
       .from("blog_articles")
       .update({ published: true, updated_at: new Date() })
       .eq("id", data.id as number);

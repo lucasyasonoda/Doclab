@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { supabaseServer } from "@/lib/supabase-server";
+import { getSupabaseServer } from "@/lib/supabase-server";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL ?? "contato@doclabmkt.com.br";
@@ -82,7 +82,7 @@ export const sendNewsletterToAllSubscribers = createServerFn({ method: "POST" })
       throw new Error("RESEND_API_KEY não configurada");
     }
 
-    const { data: subscribers, error } = await supabaseServer
+    const { data: subscribers, error } = await getSupabaseServer()
       .from("newsletter_subscribers")
       .select("email")
       .eq("email", data.subject.includes("@") ? "" : undefined)
