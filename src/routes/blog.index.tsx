@@ -65,10 +65,11 @@ function NewsletterForm() {
     }
 
     try {
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+      const supabaseUrl =
+        (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+        "https://prwjgpobtrojxzvbshxt.supabase.co";
       const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-      if (!supabaseUrl || !supabaseAnonKey)
-        throw new Error("Serviço de newsletter não configurado.");
+      if (!supabaseAnonKey) throw new Error("Serviço de newsletter não configurado.");
 
       const response = await fetch(`${supabaseUrl}/functions/v1/smart-service`, {
         method: "POST",

@@ -157,8 +157,8 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: `
               (() => {
-                const url = ${JSON.stringify(process.env.VITE_SUPABASE_URL ?? "")};
-                const key = ${JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY ?? "")};
+                const url = ${JSON.stringify(process.env.VITE_SUPABASE_URL || "https://prwjgpobtrojxzvbshxt.supabase.co")};
+                const key = ${JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByd2pncG9idHJvanh6dmJzaHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2NTA2MDAsImV4cCI6MjEwNDIyNjYwMH0.1PlGuYAvfcbGg1N6N3wrQpblaOpQHkM9EZHUBLrr8zs")};
                 const boot = () => {
                   const input = document.querySelector('[data-newsletter-email]');
                   const button = document.querySelector('[data-newsletter-submit]');
