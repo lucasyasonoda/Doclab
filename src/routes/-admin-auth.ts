@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, setCookie, deleteCookie } from "@tanstack/start-server-core/request-response";
 import { makeSessionToken, verifySessionToken } from "./-admin-session.server";
@@ -8,7 +9,7 @@ const COOKIE_NAME = "doclab_admin_session";
 const COOKIE_MAX_AGE = 86400 * 7;
 
 function sha256(str: string): string {
-  return crypto.createHash("sha256").update(str).digest("hex");
+  return createHash("sha256").update(str).digest("hex");
 }
 
 function getCookieOptions() {

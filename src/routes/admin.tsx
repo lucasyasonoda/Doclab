@@ -1,10 +1,26 @@
-import { createFileRoute, Link, redirect, useRouter } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+  useLocation,
+  useRouter,
+} from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { getAdminArticles, createArticle, updateArticle, deleteArticle, publishArticleAndNotify } from "./-admin-articles";
+import {
+  getAdminArticles,
+  createArticle,
+  updateArticle,
+  deleteArticle,
+  publishArticleAndNotify,
+} from "./-admin-articles";
 import { adminLogout, getAdminSession } from "./-admin-auth";
 
 export const Route = createFileRoute("/admin")({
-  loader: async () => {
+  loader: async ({ location }) => {
+    // A rota de login é filha de /admin, mas não pode exigir uma sessão.
+    if (location.pathname === "/admin/login") return { articles: [] };
+
     const session = await getAdminSession();
     if (!session?.admin) {
       throw redirect({ to: "/admin/login" });
@@ -16,6 +32,11 @@ export const Route = createFileRoute("/admin")({
 });
 
 function AdminDashboard() {
+  const location = useLocation();
+  return location.pathname === "/admin/login" ? <Outlet /> : <AdminDashboardContent />;
+}
+
+function AdminDashboardContent() {
   const router = useRouter();
   const { articles: initialArticles } = Route.useLoaderData();
   const [articles, setArticles] = useState(initialArticles);
@@ -62,11 +83,25 @@ function AdminDashboard() {
     try {
       await createArticle({ data: { ...form, content: parseContent(form.content) } });
       showToast("success", "Artigo criado com sucesso.");
-      setForm({ slug: "", title: "", excerpt: "", category: "", readTime: "5 min de leitura", badge: "purple", author: "Equipe Doc.Lab", content: "" });
+      setForm({
+        slug: "",
+        title: "",
+        excerpt: "",
+        category: "",
+        readTime: "5 min de leitura",
+        badge: "purple",
+        author: "Equipe Doc.Lab",
+        content: "",
+      });
       setEditingId(null);
       await loadArticles();
     } catch (err) {
-      showToast("error", err && typeof err === "object" && "message" in err ? (err.message as string) : "Erro ao criar.");
+      showToast(
+        "error",
+        err && typeof err === "object" && "message" in err
+          ? (err.message as string)
+          : "Erro ao criar.",
+      );
     } finally {
       setLoading(false);
     }
@@ -81,12 +116,19 @@ function AdminDashboard() {
     }
     setLoading(true);
     try {
-      await updateArticle({ data: { id: editingId, ...form, content: parseContent(form.content) } });
+      await updateArticle({
+        data: { id: editingId, ...form, content: parseContent(form.content) },
+      });
       showToast("success", "Artigo atualizado.");
       setEditingId(null);
       await loadArticles();
     } catch (err) {
-      showToast("error", err && typeof err === "object" && "message" in err ? (err.message as string) : "Erro ao atualizar.");
+      showToast(
+        "error",
+        err && typeof err === "object" && "message" in err
+          ? (err.message as string)
+          : "Erro ao atualizar.",
+      );
     } finally {
       setLoading(false);
     }
@@ -100,7 +142,12 @@ function AdminDashboard() {
       showToast("success", "Artigo excluído.");
       await loadArticles();
     } catch (err) {
-      showToast("error", err && typeof err === "object" && "message" in err ? (err.message as string) : "Erro ao excluir.");
+      showToast(
+        "error",
+        err && typeof err === "object" && "message" in err
+          ? (err.message as string)
+          : "Erro ao excluir.",
+      );
     } finally {
       setLoading(false);
     }
@@ -122,10 +169,18 @@ function AdminDashboard() {
     setLoading(true);
     try {
       const result = await publishArticleAndNotify({ data: { id, title, slug } });
-      showToast("success", `Publicado! E-mail enviado para ${result?.broadcast?.sent ?? 0} inscritos.`);
+      showToast(
+        "success",
+        `Publicado! E-mail enviado para ${result?.broadcast?.sent ?? 0} inscritos.`,
+      );
       await loadArticles();
     } catch (err) {
-      showToast("error", err && typeof err === "object" && "message" in err ? (err.message as string) : "Erro ao publicar.");
+      showToast(
+        "error",
+        err && typeof err === "object" && "message" in err
+          ? (err.message as string)
+          : "Erro ao publicar.",
+      );
     } finally {
       setLoading(false);
       setPublishId(null);
@@ -146,7 +201,9 @@ function AdminDashboard() {
     });
   }
 
-  function parseContent(text: string): { heading?: string; paragraphs?: string[]; list?: string[]; callout?: string }[] {
+  function parseContent(
+    text: string,
+  ): { heading?: string; paragraphs?: string[]; list?: string[]; callout?: string }[] {
     try {
       return JSON.parse(text);
     } catch {
@@ -187,14 +244,22 @@ function AdminDashboard() {
             {toast.type === "success" ? (
               <div className="flex items-center gap-3 rounded-lg bg-green-900/50 px-4 py-3 text-green-200">
                 <svg className="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 {toast.message}
               </div>
             ) : (
               <div className="flex items-center gap-3 rounded-lg bg-red-900/50 px-4 py-3 text-red-200">
                 <svg className="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 {toast.message}
               </div>
@@ -211,7 +276,19 @@ function AdminDashboard() {
               {!isCreating && (
                 <button
                   type="button"
-                  onClick={() => { setEditingId(null); setForm({ slug: "", title: "", excerpt: "", category: "", readTime: "5 min de leitura", badge: "purple", author: "Equipe Doc.Lab", content: "" }); }}
+                  onClick={() => {
+                    setEditingId(null);
+                    setForm({
+                      slug: "",
+                      title: "",
+                      excerpt: "",
+                      category: "",
+                      readTime: "5 min de leitura",
+                      badge: "purple",
+                      author: "Equipe Doc.Lab",
+                      content: "",
+                    });
+                  }}
                   className="text-sm text-cyan hover:text-white transition-colors"
                 >
                   Cancelar edição
@@ -226,7 +303,16 @@ function AdminDashboard() {
                   type="text"
                   required
                   value={form.slug}
-                  onChange={(e) => setForm({ ...form, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") })}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      slug: e.target.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9-]/g, "-")
+                        .replace(/-+/g, "-")
+                        .replace(/^-|-$/g, ""),
+                    })
+                  }
                   className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white placeholder:text-white/30 focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/40"
                   placeholder="ex: meu-novo-artigo"
                 />
@@ -331,14 +417,21 @@ function AdminDashboard() {
             ) : (
               <div className="space-y-4">
                 {articles.map((article) => (
-                  <div key={article.id} className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+                  <div
+                    key={article.id}
+                    className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
+                  >
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
                         <div className="mb-2 flex items-center gap-2">
-                          <span className={`badge badge-${article.badge ?? "purple"}`}>{article.badge}</span>
+                          <span className={`badge badge-${article.badge ?? "purple"}`}>
+                            {article.badge}
+                          </span>
                           <span className="text-xs text-white/50">{article.read_time}</span>
                         </div>
-                        <h3 className="truncate font-display text-base font-semibold text-white">{article.title}</h3>
+                        <h3 className="truncate font-display text-base font-semibold text-white">
+                          {article.title}
+                        </h3>
                         <p className="mt-1 line-clamp-2 text-sm text-gray-400">{article.excerpt}</p>
                         <div className="mt-2 flex items-center gap-3 text-xs text-white/40">
                           <span>/{article.slug}</span>

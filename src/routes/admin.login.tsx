@@ -6,7 +6,7 @@ export const Route = createFileRoute("/admin/login")({
   component: AdminLoginPage,
 });
 
-function AdminLoginPage() {
+export function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,10 @@ function AdminLoginPage() {
         setError("Não deu certo. Tente novamente.");
       }
     } catch (err) {
-      const msg = err && typeof err === "object" && "message" in err ? (err.message as string) : String(err ?? "");
+      const msg =
+        err && typeof err === "object" && "message" in err
+          ? (err.message as string)
+          : String(err ?? "");
       if (msg.includes("não encontrada") || msg.includes("Configuração")) {
         setServiceError(true);
         setError("Serviço não configurado. Faltam variáveis de ambiente.");
@@ -61,7 +64,10 @@ function AdminLoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="admin-password" className="mb-1.5 block text-sm font-medium text-white/80">
+            <label
+              htmlFor="admin-password"
+              className="mb-1.5 block text-sm font-medium text-white/80"
+            >
               Senha
             </label>
             <input
@@ -76,9 +82,7 @@ function AdminLoginPage() {
             />
           </div>
 
-          {error && !serviceError && (
-            <p className="text-sm text-red-400 text-center">{error}</p>
-          )}
+          {error && !serviceError && <p className="text-sm text-red-400 text-center">{error}</p>}
 
           <button
             type="submit"
@@ -89,9 +93,7 @@ function AdminLoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-white/40">
-          Painel restrito a equipe Doc.Lab
-        </p>
+        <p className="mt-6 text-center text-xs text-white/40">Painel restrito a equipe Doc.Lab</p>
       </div>
     </div>
   );

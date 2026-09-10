@@ -5,7 +5,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL ?? "contato@doclabmkt.com.br";
 const SITE_NAME = "Doc.Lab";
 
-async function sendEmail(params: {
+export async function sendEmail(params: {
   to: string;
   subject: string;
   html: string;
@@ -51,7 +51,12 @@ export const sendNewsletterEmail = createServerFn({ method: "POST" })
       const to = o.to;
       const subject = o.subject;
       const html = o.html;
-      if (typeof to === "string" && to.includes("@") && typeof subject === "string" && typeof html === "string") {
+      if (
+        typeof to === "string" &&
+        to.includes("@") &&
+        typeof subject === "string" &&
+        typeof html === "string"
+      ) {
         return { to, subject, html };
       }
     }
@@ -85,8 +90,7 @@ export const sendNewsletterToAllSubscribers = createServerFn({ method: "POST" })
     const { data: subscribers, error } = await getSupabaseServer()
       .from("newsletter_subscribers")
       .select("email")
-      .eq("email", data.subject.includes("@") ? "" : undefined)
-      .neq("email", "");
+      .not("email", "is", null);
 
     if (error) {
       throw new Error(`Erro ao buscar inscritos: ${error.message}`);

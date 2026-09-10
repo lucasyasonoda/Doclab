@@ -1,13 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getSupabaseServer } from "@/lib/supabase-server";
-import { sendNewsletterEmail } from "./-send-newsletter";
+import { sendEmail } from "./-send-newsletter";
 
 export const subscribeNewsletter = createServerFn({ method: "POST" })
   .validator((raw: unknown) => {
     if (raw && typeof raw === "object" && "email" in raw) {
       const email = (raw as { email: unknown }).email;
-      if (typeof email === "string" && email.includes("@")) {
-        return { email: email.toLowerCase() };
+      if (typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+        return { email: email.trim().toLowerCase() };
       }
     }
     throw new Error("E-mail inválido");
@@ -88,11 +88,14 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
 </html>
     `.trim();
 
-    try {
-      await sendNewsletterEmail({ data: { to: email, subject, html } });
-    } catch (emailError) {
-      // Falha no envio não deve impedir o cadastro — o inscrito já foi salvo
-      console.error("[subscribeNewsletter] falha no envio de confirmação:", emailError);
+    const emailResult = await sendEmail({ to: email, subject, html });
+    if (!emailResult.success) {
+      console.error("[subscribeNewsletter] falha no envio de confirmação:", emailResult.error);
+      return {
+        success: true,
+        message:
+          "E-mail cadastrado, mas não foi possível enviar a confirmação. Tente novamente mais tarde.",
+      };
     }
 
     return { success: true, message: "Inscrito com sucesso! Verifique seu e-mail." };

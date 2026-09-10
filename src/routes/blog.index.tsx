@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, useRef } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { getSupabaseServer } from "@/lib/supabase-server";
-import { subscribeNewsletter } from "./-subscribe-newsletter";
 import { BLOG_ARTICLES } from "@/content/site";
 import type { BlogArticle } from "@/content/site";
 
@@ -17,7 +16,10 @@ export const Route = createFileRoute("/blog/")({
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return (data ?? []) as BlogArticle[];
+      // Se o banco estiver vazio ou indisponível, mantém os artigos estáticos
+      // (lembrete: sem isso a página fica em branco assim que a tabela existe)
+      if (data && data.length > 0) return data as BlogArticle[];
+      return BLOG_ARTICLES;
     } catch {
       // Fallback: usa dados estáticos durante build ou se Supabase indisponível
       return BLOG_ARTICLES;
@@ -42,15 +44,19 @@ export const Route = createFileRoute("/blog/")({
 function NewsletterForm() {
   const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const emailRef = useRef<HTMLInputElement>(null);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  useEffect(() => {
+    const input = emailRef.current;
+    input?.closest("#newsletter")?.setAttribute("data-react-newsletter", "true");
+  }, []);
+
+  async function handleSubmit() {
+    emailRef.current?.closest("#newsletter")?.setAttribute("data-react-newsletter", "true");
     setState("loading");
     setErrorMsg("");
 
-    const formData = new FormData(e.currentTarget);
-    const raw = formData.get("email");
-    const email = typeof raw === "string" ? raw.trim() : "";
+    const email = emailRef.current?.value.trim() ?? "";
 
     if (!email) {
       setState("error");
@@ -59,35 +65,55 @@ function NewsletterForm() {
     }
 
     try {
-      const result = await subscribeNewsletter({ data: { email } });
-      if (result?.success) {
-        setState("success");
-        e.currentTarget.reset();
-      } else {
-        setState("error");
-        setErrorMsg(result?.message || result?.error || "Não deu certo. Tente novamente.");
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+      if (!supabaseUrl || !supabaseAnonKey)
+        throw new Error("Serviço de newsletter não configurado.");
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/smart-service`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: supabaseAnonKey,
+          Authorization: `Bearer ${supabaseAnonKey}`,
+        },
+        body: JSON.stringify({ email }),
+      });
+      const result = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+        error?: string;
+      };
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || result.message || `Erro HTTP ${response.status}`);
       }
+
+      setState("success");
+      if (emailRef.current) emailRef.current.value = "";
     } catch (err) {
       setState("error");
-      const msg = err && typeof err === "object" && "message" in err ? (err.message as string) : String(err);
+      const msg =
+        err && typeof err === "object" && "message" in err ? (err.message as string) : String(err);
       setErrorMsg(msg || "Não deu certo. Tente novamente.");
       console.error("[Newsletter] error:", err);
     }
   }
 
   return (
-    <form className="mt-8 flex flex-col gap-3 sm:flex-row" onSubmit={handleSubmit}>
+    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
       <input
-        name="email"
+        ref={emailRef}
         type="email"
-        required
+        data-newsletter-email="true"
         aria-label="E-mail para newsletter"
         className="w-full flex-1 rounded-lg border-0 bg-white/10 px-5 py-3.5 text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 focus:ring-2 focus:ring-cyan disabled:bg-gray-100 disabled:cursor-not-allowed"
         disabled={state === "loading" || state === "success"}
         placeholder="Seu melhor e-mail"
       />
       <button
-        type="submit"
+        type="button"
+        data-newsletter-submit="true"
+        onClick={handleSubmit}
         className="btn-primary bg-white !text-navy hover:!bg-gray-100 justify-center"
         disabled={state === "loading" || state === "success"}
       >
@@ -102,7 +128,7 @@ function NewsletterForm() {
       {state === "error" && errorMsg && (
         <p className="text-sm text-red-300 sm:col-span-2 text-center">{errorMsg}</p>
       )}
-    </form>
+    </div>
   );
 }
 

@@ -4,21 +4,29 @@ import { sendNewsletterToAllSubscribers } from "./-send-newsletter";
 import { requireAdminSession } from "./-admin-auth";
 import type { BlogArticle } from "@/content/site";
 
-export const getAdminArticles = createServerFn({ method: "GET" })
-  .handler(async () => {
-    await requireAdminSession();
-    const { data, error } = await getSupabaseServer()
-      .from("blog_articles")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (error) throw error;
-    return (data ?? []) as BlogArticle[];
-  });
+export const getAdminArticles = createServerFn({ method: "GET" }).handler(async () => {
+  await requireAdminSession();
+  const { data, error } = await getSupabaseServer()
+    .from("blog_articles")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as BlogArticle[];
+});
 
 export const createArticle = createServerFn({ method: "POST" })
   .validator((raw: unknown) => {
     if (raw && typeof raw === "object" && "slug" in raw && "title" in raw && "excerpt" in raw) {
-      const o = raw as { slug?: unknown; title?: unknown; excerpt?: unknown; badge?: unknown; category?: unknown; readTime?: unknown; author?: unknown; content?: unknown };
+      const o = raw as {
+        slug?: unknown;
+        title?: unknown;
+        excerpt?: unknown;
+        badge?: unknown;
+        category?: unknown;
+        readTime?: unknown;
+        author?: unknown;
+        content?: unknown;
+      };
       const slug = typeof o.slug === "string" ? o.slug : "";
       const title = typeof o.title === "string" ? o.title : "";
       const excerpt = typeof o.excerpt === "string" ? o.excerpt : "";
@@ -86,7 +94,10 @@ export const updateArticle = createServerFn({ method: "POST" })
     if (data.author !== undefined) updates.author = data.author;
     if (data.content !== undefined) updates.content = data.content;
     if (data.published !== undefined) updates.published = data.published;
-    const { error } = await getSupabaseServer().from("blog_articles").update(updates).eq("id", data.id as number);
+    const { error } = await getSupabaseServer()
+      .from("blog_articles")
+      .update(updates)
+      .eq("id", data.id as number);
     if (error) throw error;
     return { success: true };
   });
@@ -102,7 +113,10 @@ export const deleteArticle = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     await requireAdminSession();
-    const { error } = await getSupabaseServer().from("blog_articles").delete().eq("id", data.id as number);
+    const { error } = await getSupabaseServer()
+      .from("blog_articles")
+      .delete()
+      .eq("id", data.id as number);
     if (error) throw error;
     return { success: true };
   });
