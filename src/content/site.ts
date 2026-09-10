@@ -1,4 +1,4 @@
-// Analytics — IDs configurados via variáveis de ambiente (.env), para não expor/versionar
+﻿// Analytics — IDs configurados via variáveis de ambiente (.env), para não expor/versionar
 // o ID de produção direto no código. Ver .env.example na raiz do projeto.
 export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? "";
 export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID ?? "";
@@ -6,17 +6,15 @@ export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID ?? "";
 export const SITE = {
   name: "Doc.Lab",
   tagline: "Agência de Marketing Ético para Saúde",
-  email: "contato@doclabsaude.com.br",
-  privacyEmail: "privacidade@doclabag.com.br",
+  email: "contato@doclabmkt.com.br",
+  privacyEmail: "privacidade@doclabmkt.com.br",
   whatsapp: "5515997961512",
   whatsappDisplay: "(15) 99796-1512",
-  instagram: "https://instagram.com/doclabagencia",
-  instagramHandle: "@doclabagencia",
+  instagram: "https://instagram.com/doclabmkt",
+  instagramHandle: "@doclabmkt",
   cnpj: "00.000.000/0001-00",
   address:
     "Atendimento remoto em todo o Brasil. Reuniões presenciais em São Paulo, SP mediante agendamento.",
-  mapEmbedUrl:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11556.372963296011!2d-47.48293602477855!3d-23.5020571973908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c58abf0131c73d%3A0x62b1fd1e1d8a57f7!2sPadaria%20Real%20Centro!5e0!3m2!1spt-BR!2sbr!4v1777638223435!5m2!1spt-BR!2sbr",
 };
 
 export const HERO_IMAGE_URL =
@@ -34,59 +32,39 @@ export const NAV_LINKS = [
   { to: "/contato", label: "Contato" },
 ];
 
-export const HERO_STATS = [
-  { n: "98%", l: "Taxa de satisfação dos clientes" },
-  { n: "10+", l: "Especialidades médicas atendidas" },
-  { n: "3x", l: "Crescimento médio de presença digital" },
-];
-
-export type Differential = { icon: string; iconBox: string; title: string; body: string };
+export type Differential = { title: string; body: string };
 
 export const DIFFERENTIALS: Differential[] = [
   {
-    icon: "🎓",
-    iconBox: "icon-box-cyan",
     title: "Especialistas, não generalistas",
     body: "Nosso time é formado por profissionais de comunicação com foco em saúde. Conhecemos a rotina do consultório, os desafios da gestão e as restrições éticas que todo profissional enfrenta.",
   },
   {
-    icon: "⚖️",
-    iconBox: "icon-box-purple",
     title: "Marketing ético como prioridade",
     body: "Toda estratégia é desenvolvida dentro das normas do CFM e demais conselhos de classe. Você não precisa se preocupar em infringir as regras — essa é a nossa responsabilidade.",
   },
   {
-    icon: "📊",
-    iconBox: "icon-box-blue",
     title: "Crescimento baseado em dados",
     body: "Relatórios claros, metas mensuráveis e decisões fundamentadas em evidências. Nenhuma ação é tomada sem um objetivo claro, e cada resultado é rastreado e comunicado a você.",
   },
   {
-    icon: "✦",
-    iconBox: "icon-box-grad",
     title: "Autoridade, não volume",
-    body: "Não acreditamos em quantidade de posts sem propósito. Construímos sua presença digital como reflexo fiel da sua excelência clínica — conteúdo que posiciona e que os pacientes certos leem.",
+    body: "Não acreditamos em quantidade de posts sem propósito. Construímos sua presença digital como reflexo fiel da sua excelência médica — conteúdo que posiciona e que os pacientes certos leem.",
   },
 ];
 
-export type WhyUsItem = { icon: string; iconBox: string; title: string; body: string };
+export type WhyUsItem = { title: string; body: string };
 
 export const WHY_US: WhyUsItem[] = [
   {
-    icon: "🤝",
-    iconBox: "icon-box-cyan",
     title: "Parceria de longo prazo",
     body: "Não vendemos pacotes e desaparecemos. Acompanhamos de perto a evolução do seu posicionamento e atuamos como extensão do seu consultório.",
   },
   {
-    icon: "🔒",
-    iconBox: "icon-box-purple",
     title: "Sigilo e conformidade total",
     body: "Zero dados de pacientes, zero exposição indevida. Comunicação estratégica, discreta e sempre alinhada à LGPD.",
   },
   {
-    icon: "🌎",
-    iconBox: "icon-box-grad",
     title: "Presença nacional",
     body: "Atendemos profissionais de todo o Brasil, com mais de 10 especialidades médicas já acompanhadas pela nossa equipe.",
   },
@@ -132,7 +110,7 @@ export const HOME_BLOG_PREVIEWS: BlogPreview[] = [
       "Entenda as fronteiras do que é permitido e descubra como transformar seu conhecimento clínico em conteúdo que gera confiança — e pacientes qualificados.",
   },
   {
-    slug: "",
+    slug: "cfm-resolucao-2336-2023-publicidade-medica",
     badge: "purple",
     category: "Ética e Legislação",
     title: "O que diz a Resolução CFM 2.336/2023 sobre publicidade médica",
@@ -140,12 +118,36 @@ export const HOME_BLOG_PREVIEWS: BlogPreview[] = [
       "Um guia prático e direto sobre as novas diretrizes de publicidade para médicos: o que mudou, o que é permitido e como adaptar sua comunicação.",
   },
   {
-    slug: "",
+    slug: "marketing-fidelizacao-pacientes-voltam",
     badge: "cyan",
     category: "Gestão de Consultório",
     title: "Marketing e fidelização: por que pacientes voltam (ou não voltam)",
     excerpt:
       "A relação entre comunicação digital e a experiência dentro do consultório — como o marketing ajuda na retenção de pacientes e na reputação da clínica.",
+  },
+  {
+    slug: "seo-local-consultorios-aparecer-google",
+    badge: "cyan",
+    category: "Marketing Médico",
+    title: "SEO local para consultórios: como aparecer no Google da sua cidade",
+    excerpt:
+      "Estratégias práticas de SEO local para médicos e clínicas. Como otimizar seu Google Meu Negócio e aparecer nos resultados certos.",
+  },
+  {
+    slug: "ia-criacao-conteudo-medico-seguro",
+    badge: "purple",
+    category: "Tendências",
+    title: "Inteligência artificial na criação de conteúdo médico: o que é seguro usar",
+    excerpt:
+      "Como usar ferramentas de IA para acelerar a produção de conteúdo sem comprometer a precisão científica e a conformidade ética.",
+  },
+  {
+    slug: "linkedin-medicos-rede-subutilizada",
+    badge: "cyan",
+    category: "Marketing Médico",
+    title: "LinkedIn para médicos: a rede social que você está subutilizando",
+    excerpt:
+      "Como o LinkedIn pode ser a principal ferramenta de construção de autoridade e networking para profissionais de saúde.",
   },
 ];
 
@@ -153,9 +155,6 @@ export type ServiceItem = {
   id: string;
   number: string;
   badge: "cyan" | "purple";
-  icon: string;
-  iconBox: string;
-  imageBg: "cyan" | "purple" | "blue" | "grad";
   title: string;
   paragraphs: string[];
   features: string[];
@@ -167,17 +166,14 @@ export const SERVICES: ServiceItem[] = [
     id: "presenca-digital",
     number: "01",
     badge: "cyan",
-    icon: "💬",
-    iconBox: "icon-box-cyan",
-    imageBg: "cyan",
     title: "Gestão de Presença Digital",
     paragraphs: [
-      "Transformamos seu conhecimento clínico em conteúdo estratégico para redes sociais. Sem sensacionalismo, sem jargões de marketing agressivo — apenas posicionamento sólido, dentro das normas do seu conselho de classe.",
-      "Médicos e profissionais de saúde passam anos construindo expertise clínica. A Doc.Lab cria a ponte entre a sua excelência clínica e a linguagem digital — respeitando cada fronteira ética do caminho.",
+      "Transformamos seu conhecimento clínico em conteúdo estratégico para redes sociais.",
+      "Médicos e profissionais de saúde passam anos construindo expertise clínica.",
     ],
     features: [
       "Planejamento editorial mensal",
-      "Criação de conteúdo completo (texto, design e legendas)",
+      "Criação de conteúdo completo (texto e legendas)",
       "Gestão e publicação nos melhores horários",
       "Monitoramento e relatórios mensais",
       "Checagem ética em cada peça antes de publicar",
@@ -187,12 +183,9 @@ export const SERVICES: ServiceItem[] = [
     id: "trafego-pago",
     number: "02",
     badge: "purple",
-    icon: "📢",
-    iconBox: "icon-box-purple",
-    imageBg: "purple",
     title: "Tráfego Pago para Saúde",
     paragraphs: [
-      "Google Ads e Meta Ads desenvolvidos com profundo respeito às diretrizes éticas do setor de saúde. Alcançamos os pacientes ideais para a sua especialidade — sem promessas de cura, sem sensacionalismo, dentro de cada norma aplicável.",
+      "Google Ads e Meta Ads desenvolvidos com profundo respeito às diretrizes éticas do setor de saúde.",
       "Cada campanha é desenvolvida por quem conhece as duas linguagens: a dos algoritmos de mídia paga e a do código de ética do setor de saúde.",
     ],
     features: [
@@ -206,13 +199,10 @@ export const SERVICES: ServiceItem[] = [
     id: "branding",
     number: "03",
     badge: "cyan",
-    icon: "✦",
-    iconBox: "icon-box-blue",
-    imageBg: "blue",
     title: "Posicionamento e Branding",
     paragraphs: [
-      "Construímos a identidade da sua marca pessoal como profissional de saúde — do conceito à identidade visual. Uma marca que comunica excelência antes mesmo do primeiro contato.",
-      "Antes de entrar no seu consultório, o paciente já pesquisou seu nome, viu seu perfil e formou uma opinião. Construir uma marca forte no setor de saúde não é vaidade — é uma forma legítima de fazer com que o paciente certo te encontre e confie em você.",
+      "Construímos a identidade da sua marca pessoal como profissional de saúde — do conceito à identidade visual.",
+      "Antes de entrar no seu consultório, o paciente já pesquisou seu nome, viu seu perfil e formou uma opinião.",
     ],
     features: [
       "Diagnóstico de posicionamento atual",
@@ -226,12 +216,9 @@ export const SERVICES: ServiceItem[] = [
     id: "sites",
     number: "04",
     badge: "purple",
-    icon: "🌐",
-    iconBox: "icon-box-grad",
-    imageBg: "grad",
     title: "Sites de Alta Conversão",
     paragraphs: [
-      "Sites e landing pages desenvolvidos para transformar visitantes em pacientes qualificados. Design profissional, carregamento rápido, SEO otimizado e texto estratégico — tudo alinhado à sua especialidade e ao seu posicionamento.",
+      "Sites e landing pages desenvolvidos para transformar visitantes em pacientes qualificados.",
     ],
     features: [
       "Design responsivo (mobile, tablet e desktop)",
@@ -246,12 +233,9 @@ export const SERVICES: ServiceItem[] = [
     id: "consultoria",
     number: "05",
     badge: "cyan",
-    icon: "🧭",
-    iconBox: "icon-box-cyan",
-    imageBg: "cyan",
     title: "Consultoria de Marketing Ético",
     paragraphs: [
-      "A incerteza sobre o que é permitido nas normas do seu conselho de classe não deve paralisar a sua comunicação. Damos clareza, segurança e um plano de ação concreto para agir dentro das regras.",
+      "A incerteza sobre o que é permitido nas normas do seu conselho de classe não deve paralisar a sua comunicação.",
     ],
     features: [
       "Consultoria pontual de 1h30 com relatório por escrito",
@@ -264,16 +248,11 @@ export const SERVICES: ServiceItem[] = [
     id: "assessoria-imprensa",
     number: "06",
     badge: "purple",
-    icon: "📰",
-    iconBox: "icon-box-purple",
-    imageBg: "purple",
     title: "Assessoria de Imprensa",
-    paragraphs: [
-      "Redes sociais constroem audiência. A imprensa constrói credibilidade. Posicionamos médicos e clínicas como fontes de referência nos principais portais, revistas e programas de saúde do Brasil — dentro das normas do CFM.",
-    ],
+    paragraphs: ["Redes sociais constroem audiência. A imprensa constrói autoridade."],
     features: [
       "Relações com jornalistas e editores de veículos de saúde",
-      "Produção de releases, op-eds e notas técnicas",
+      "Produção de releases, artigos e notas técnicas",
       "Media training para entrevistas em rádio, TV e podcasts",
       "Clipping mensal e cálculo de valor equivalente de mídia (AVE)",
       "Gestão de comunicação em crise",
@@ -283,12 +262,9 @@ export const SERVICES: ServiceItem[] = [
     id: "treinamento-equipe",
     number: "07",
     badge: "cyan",
-    icon: "🤝",
-    iconBox: "icon-box-blue",
-    imageBg: "blue",
     title: "Treinamento de Secretárias e Time de Vendas",
     paragraphs: [
-      "De nada adianta investir em marketing se a secretária não sabe converter um contato em consulta agendada. Treinamos sua equipe para atender com acolhimento, gerar confiança e transformar ligações em agendamentos — sem abordagem de vendas invasiva.",
+      "De nada adianta investir em marketing se a secretária não sabe converter um contato em consulta agendada.",
     ],
     features: [
       "Atendimento humanizado no WhatsApp e por telefone",
@@ -329,15 +305,6 @@ export const SERVICES_FAQ: FaqItem[] = [
     answer:
       "Não. Nossa metodologia é baseada em atendimento humanizado. Ensinamos como acolher o paciente, responder dúvidas com clareza e facilitar a decisão de agendar — sem pressão e sem manipulação.",
   },
-];
-
-export type CaseStat = { n: string; l: string };
-
-export const CASES_STATS: CaseStat[] = [
-  { n: "98%", l: "Taxa de satisfação dos clientes" },
-  { n: "+312%", l: "Crescimento médio de alcance orgânico" },
-  { n: "10+", l: "Especialidades médicas atendidas" },
-  { n: "4.8★", l: "Avaliação média no Google Meu Negócio" },
 ];
 
 export type CaseTestimonial = {
@@ -417,24 +384,18 @@ export const CASES: CaseTestimonial[] = [
   },
 ];
 
-export type MissionItem = { icon: string; iconBox: string; title: string; body: string };
+export type MissionItem = { title: string; body: string };
 
 export const MISSION_VISION_PURPOSE: MissionItem[] = [
   {
-    icon: "🎯",
-    iconBox: "icon-box-cyan",
     title: "Missão",
     body: "Empoderar profissionais de saúde com estratégias digitais éticas que ampliam seu alcance, fortalecem sua autoridade e atraem pacientes que valorizam sua excelência.",
   },
   {
-    icon: "👁",
-    iconBox: "icon-box-purple",
     title: "Visão",
     body: "Ser a referência nacional em marketing ético para saúde, reconhecida por transformar o padrão de comunicação do setor.",
   },
   {
-    icon: "💡",
-    iconBox: "icon-box-grad",
     title: "Propósito",
     body: "Fazer com que o paciente certo encontre o profissional certo — e que essa conexão aconteça com confiança, transparência e ética.",
   },
@@ -465,58 +426,46 @@ export const TIMELINE: TimelineItem[] = [
   },
 ];
 
-export type ValueItem = { icon: string; iconBox: string; title: string; body: string };
+export type ValueItem = { title: string; body: string };
 
 export const VALUES: ValueItem[] = [
   {
-    icon: "⚖️",
-    iconBox: "icon-box-cyan",
     title: "Ética acima de tudo",
     body: "Nenhuma estratégia, campanha ou conteúdo vai ao ar sem passar pela lente da conformidade com o CFM, CRO, CFF e demais conselhos de classe. Este não é um diferencial — é uma exigência interna.",
   },
   {
-    icon: "🔬",
-    iconBox: "icon-box-purple",
     title: "Rigor como método",
     body: "Aplicamos ao marketing o mesmo rigor científico que os profissionais de saúde aplicam à medicina. Decisões baseadas em dados, hipóteses testadas e resultados mensuráveis.",
   },
   {
-    icon: "🤝",
-    iconBox: "icon-box-blue",
     title: "Parceria genuína",
     body: "Não somos fornecedores. Somos parceiros estratégicos. Celebramos suas conquistas, entendemos seus desafios e adaptamos a estratégia conforme sua carreira evolui.",
   },
   {
-    icon: "📚",
-    iconBox: "icon-box-grad",
     title: "Educação como prática",
     body: "Acreditamos que um cliente bem informado é um cliente mais satisfeito. Por isso, explicamos tudo o que fazemos, por que fazemos e o que esperamos de resultado em cada ação.",
   },
 ];
 
-export type TeamMember = { icon: string; name: string; role: string; bio: string };
+export type TeamMember = { name: string; role: string; bio: string };
 
 export const TEAM: TeamMember[] = [
   {
-    icon: "👩‍💼",
     name: "Amábile Bianchi",
     role: "Fundadora",
     bio: "Formada em Jornalismo há 15 anos, especialista em Comunicação e Marketing pela ECA-USP.",
   },
   {
-    icon: "👩‍💻",
     name: "Elizabete Moraes",
     role: "Coordenadora",
     bio: "Formada em Publicidade e Propaganda, com 15 anos de experiência na área de marketing. Especialista em gestão de tráfego pago para Google e Meta Business.",
   },
   {
-    icon: "👩‍🎨",
     name: "Luisa Sampaio",
     role: "Designer",
     bio: "Formada em Design Gráfico pela Universidade de Sorocaba. Especialista em Branding.",
   },
   {
-    icon: "👩‍🎓",
     name: "Graça Helena Sanches",
     role: "Estagiária",
     bio: "Graduanda em Jornalismo pela Universidade de Sorocaba.",
@@ -621,7 +570,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     ],
   },
   {
-    slug: "",
+    slug: "cfm-resolucao-2336-2023-publicidade-medica",
     badge: "purple",
     category: "Ética e Legislação",
     readTime: "8 min de leitura",
@@ -631,7 +580,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     external: true,
   },
   {
-    slug: "",
+    slug: "marketing-fidelizacao-pacientes-voltam",
     badge: "cyan",
     category: "Gestão de Consultório",
     readTime: "10 min de leitura",
@@ -641,7 +590,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     external: true,
   },
   {
-    slug: "",
+    slug: "seo-local-consultorios-aparecer-google",
     badge: "cyan",
     category: "Marketing Médico",
     readTime: "9 min de leitura",
@@ -651,7 +600,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     external: true,
   },
   {
-    slug: "",
+    slug: "ia-criacao-conteudo-medico-seguro",
     badge: "purple",
     category: "Tendências",
     readTime: "7 min de leitura",
@@ -661,7 +610,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     external: true,
   },
   {
-    slug: "",
+    slug: "linkedin-medicos-rede-subutilizada",
     badge: "cyan",
     category: "Marketing Médico",
     readTime: "11 min de leitura",
@@ -674,24 +623,18 @@ export const BLOG_ARTICLES: BlogArticle[] = [
 
 export const CONTACT_CHANNELS = [
   {
-    icon: "📱",
-    iconBox: "icon-box-cyan",
     title: "WhatsApp",
     value: SITE.whatsappDisplay,
     href: `https://wa.me/${SITE.whatsapp}`,
     body: "A forma mais rápida de falar com nossa equipe. Respondemos em até 2 horas em horário comercial.",
   },
   {
-    icon: "✉️",
-    iconBox: "icon-box-purple",
     title: "E-mail",
     value: SITE.email,
     href: `mailto:${SITE.email}`,
     body: "Prefere mandar por e-mail? Respondemos todas as mensagens em até 24 horas úteis.",
   },
   {
-    icon: "📸",
-    iconBox: "icon-box-grad",
     title: "Instagram",
     value: SITE.instagramHandle,
     href: SITE.instagram,
@@ -701,14 +644,10 @@ export const CONTACT_CHANNELS = [
 
 export const CONTACT_INFO_CARDS = [
   {
-    icon: "🕐",
-    iconBox: "icon-box-cyan",
     title: "Horário de Atendimento",
     body: "Segunda a sexta: 8h às 18h. Respostas urgentes de clientes ativos também aos sábados.",
   },
   {
-    icon: "📍",
-    iconBox: "icon-box-purple",
     title: "Localização",
     body: "Atendemos clientes em todo o Brasil de forma remota. Reuniões presenciais disponíveis mediante agendamento em São Paulo, SP.",
   },

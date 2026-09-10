@@ -20,13 +20,6 @@ export const Route = createFileRoute("/servicos")({
   component: Servicos,
 });
 
-const bgGradients: Record<ServiceItem["imageBg"], string> = {
-  cyan: "from-cyan to-cyan-dark",
-  purple: "from-purple to-purple-dark",
-  blue: "from-[#4b6cb7] to-[#3a5a9e]",
-  grad: "from-cyan to-purple",
-};
-
 function ServiceBlock({ service, index }: { service: ServiceItem; index: number }) {
   const reverse = index % 2 === 1;
   return (
@@ -43,12 +36,7 @@ function ServiceBlock({ service, index }: { service: ServiceItem; index: number 
           <span className={`badge badge-${service.badge} mb-4 inline-flex`}>
             Solução {service.number}
           </span>
-          <span className={`icon-box ${service.iconBox}`} aria-hidden>
-            {service.icon}
-          </span>
-          <h2 className="mt-5 font-display text-2xl font-bold text-navy md:text-3xl">
-            {service.title}
-          </h2>
+          <h2 className="card-text__title card-text__title--xl mt-5">{service.title}</h2>
           {service.paragraphs.map((p) => (
             <p key={p.slice(0, 24)} className="mt-4 text-gray-700">
               {p}
@@ -75,10 +63,8 @@ function ServiceBlock({ service, index }: { service: ServiceItem; index: number 
           as="figure"
           delay={2}
           aria-hidden
-          className={`relative flex aspect-[4/3] items-center justify-center rounded-3xl bg-gradient-to-br ${bgGradients[service.imageBg]} m-0`}
-        >
-          <span className="text-7xl">{service.icon}</span>
-        </Reveal>
+          className="relative flex aspect-[4/3] items-center justify-center rounded-3xl bg-gray-50/50 m-0"
+        />
       </div>
     </section>
   );

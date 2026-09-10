@@ -45,11 +45,8 @@ function Contato() {
                 key={c.title}
                 className="card-surface flex gap-5 p-6"
               >
-                <span className={`icon-box ${c.iconBox} shrink-0`} aria-hidden>
-                  {c.icon}
-                </span>
                 <div>
-                  <h3 className="font-display text-lg font-semibold text-navy">{c.title}</h3>
+                  <h3 className="card-text__title card-text__title--navy">{c.title}</h3>
                   <a
                     href={c.href}
                     target={c.href.startsWith("http") ? "_blank" : undefined}
@@ -58,7 +55,7 @@ function Contato() {
                   >
                     {c.value}
                   </a>
-                  <p className="mt-1.5 text-sm text-gray-700">{c.body}</p>
+                  <p className="card-text__body mt-1.5 text-sm">{c.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -72,11 +69,8 @@ function Contato() {
                 key={c.title}
                 className="card-surface p-8"
               >
-                <span className={`icon-box ${c.iconBox}`} aria-hidden>
-                  {c.icon}
-                </span>
-                <h3 className="mt-5 font-display text-lg font-semibold text-navy">{c.title}</h3>
-                <p className="mt-3 text-sm text-gray-700">{c.body}</p>
+                <h3 className="card-text__title">{c.title}</h3>
+                <p className="card-text__body mt-3">{c.body}</p>
               </Reveal>
             ))}
           </div>

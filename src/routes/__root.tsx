@@ -130,6 +130,15 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <head>
         <HeadContent />
+        {/* Fallback: se o JS client-side falhar (ex: client-entry, hidratação),
+            o conteúdo das páginas continua visível em vez de ficar invisível por
+            [data-reveal] { opacity: 0 }. O ideal é que Raresult um erro no client, mas
+            como medida de segurança adicionamos este fallback. */}
+        <noscript>
+          <style>{`
+            [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+          `}</style>
+        </noscript>
       </head>
       <body>
         {META_PIXEL_ID && (
@@ -144,6 +153,59 @@ function RootShell({ children }: { children: ReactNode }) {
           </noscript>
         )}
         {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (() => {
+                const url = ${JSON.stringify(process.env.VITE_SUPABASE_URL ?? "")};
+                const key = ${JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY ?? "")};
+                const boot = () => {
+                  const input = document.querySelector('[data-newsletter-email]');
+                  const button = document.querySelector('[data-newsletter-submit]');
+                  if (!(input instanceof HTMLInputElement) || !(button instanceof HTMLButtonElement)) return;
+                  if (button.dataset.newsletterBound === 'true') return;
+                  button.dataset.newsletterBound = 'true';
+                  button.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    const email = input.value.trim();
+                    if (!email) return;
+                    button.disabled = true;
+                    button.textContent = 'Enviando...';
+                    try {
+                      const response = await fetch(url + '/functions/v1/smart-service', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', apikey: key, Authorization: 'Bearer ' + key },
+                        body: JSON.stringify({ email }),
+                      });
+                      const result = await response.json();
+                      if (!response.ok || !result.success) throw new Error(result.error || result.message || 'Não deu certo.');
+                      input.value = '';
+                      button.textContent = 'Inscrito com sucesso ✓';
+                    } catch (error) {
+                      button.disabled = false;
+                      button.textContent = 'Tentar novamente';
+                      const message = error instanceof Error ? error.message : 'Não foi possível cadastrar o e-mail.';
+                      let errorBox = document.querySelector('[data-newsletter-error]');
+                      if (!errorBox) {
+                        errorBox = document.createElement('p');
+                        errorBox.setAttribute('data-newsletter-error', 'true');
+                        errorBox.style.color = '#fecaca';
+                        errorBox.style.fontSize = '0.875rem';
+                        errorBox.style.textAlign = 'center';
+                        button.parentElement?.appendChild(errorBox);
+                      }
+                      errorBox.textContent = message;
+                      console.error('[Newsletter fallback]', error);
+                    }
+                  });
+                };
+                if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+                else boot();
+                new MutationObserver(boot).observe(document.body, { childList: true, subtree: true });
+              })();
+            `,
+          }}
+        />
         <Scripts />
       </body>
     </html>

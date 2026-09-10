@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
-import { CASES, CASES_STATS } from "@/content/site";
+import { CASES } from "@/content/site";
 
 export const Route = createFileRoute("/cases")({
   head: () => ({
@@ -33,18 +33,6 @@ function Cases() {
         lead="Médicos de diversas especialidades que apostaram na Doc.Lab e colheram resultados concretos."
       />
 
-      {/* STATS */}
-      <Reveal as="section" className="bg-white py-16">
-        <dl className="container-edit grid grid-cols-2 gap-8 text-center md:grid-cols-4">
-          {CASES_STATS.map((s) => (
-            <div key={s.l}>
-              <dt className="font-display text-3xl font-bold text-navy md:text-4xl">{s.n}</dt>
-              <dd className="mt-2 text-sm text-gray-700">{s.l}</dd>
-            </div>
-          ))}
-        </dl>
-      </Reveal>
-
       {/* DEPOIMENTOS */}
       <section className="bg-secondary/40 py-20">
         <div className="container-edit">
@@ -65,7 +53,7 @@ function Cases() {
               >
                 <header className="flex items-center gap-3">
                   <figure aria-hidden className="text-3xl">
-                    {c.role.includes("Dra.") || c.name.startsWith("Dra") ? "👩‍⚕️" : "👨‍⚕️"}
+                    ✦
                   </figure>
                   <hgroup>
                     <h3 className="font-display font-semibold text-navy">{c.name}</h3>
