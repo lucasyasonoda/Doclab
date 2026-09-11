@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { adminLogin, adminLogout, getAdminSession } from "./-admin-auth";
 
 export const Route = createFileRoute("/admin/login")({
@@ -7,7 +7,10 @@ export const Route = createFileRoute("/admin/login")({
 });
 
 export function AdminLoginPage() {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [serviceError, setServiceError] = useState(false);
@@ -16,9 +19,14 @@ export function AdminLoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    const loginUsername = usernameRef.current?.value.trim() ?? username.trim();
+    const loginPassword = passwordRef.current?.value ?? password;
     setServiceError(false);
     try {
-      const result = await adminLogin({ password });
+      const result = await adminLogin({
+        data: { username: loginUsername, password: loginPassword },
+      });
       if (result.success) {
         window.location.href = "/admin/";
       } else {
@@ -32,8 +40,8 @@ export function AdminLoginPage() {
       if (msg.includes("não encontrada") || msg.includes("Configuração")) {
         setServiceError(true);
         setError("Serviço não configurado. Faltam variáveis de ambiente.");
-      } else if (msg.includes("incorreta")) {
-        setError("Senha incorreta.");
+      } else if (msg.includes("incorretos")) {
+        setError("Usuário ou senha incorretos.");
       } else {
         setError(msg || "Erro ao fazer login.");
       }
@@ -53,7 +61,7 @@ export function AdminLoginPage() {
             <span className="font-display text-xl font-bold text-white">Doc.Lab</span>
           </div>
           <h1 className="font-display text-2xl font-bold text-white">Painel Administrativo</h1>
-          <p className="mt-2 text-sm text-white/60"> insira a senha para continuar</p>
+          <p className="mt-2 text-sm text-white/60">insira suas credenciais para continuar</p>
         </div>
 
         {serviceError && (
@@ -65,15 +73,35 @@ export function AdminLoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
+              htmlFor="admin-username"
+              className="mb-1.5 block text-sm font-medium text-white/80"
+            >
+              Usuário
+            </label>
+            <input
+              ref={usernameRef}
+              id="admin-username"
+              type="text"
+              autoComplete="username"
+              autoFocus
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full rounded-lg border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/40 disabled:cursor-not-allowed"
+              placeholder="Digite o usuário"
+            />
+          </div>
+          <div>
+            <label
               htmlFor="admin-password"
               className="mb-1.5 block text-sm font-medium text-white/80"
             >
               Senha
             </label>
             <input
+              ref={passwordRef}
               id="admin-password"
               type="password"
-              autoFocus
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -86,7 +114,7 @@ export function AdminLoginPage() {
 
           <button
             type="submit"
-            disabled={loading || !password.trim()}
+            disabled={loading}
             className="w-full rounded-lg bg-white px-4 py-3 text-navy font-semibold hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
           >
             {loading ? "Entrando..." : "Entrar"}

@@ -4,6 +4,7 @@ import { getCookie, setCookie, deleteCookie } from "@tanstack/start-server-core/
 import { makeSessionToken, verifySessionToken } from "./-admin-session.server";
 
 const SESSION_SECRET = process.env.SESSION_SECRET ?? "";
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "";
 const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH ?? "";
 const COOKIE_NAME = "doclab_admin_session";
 const COOKIE_MAX_AGE = 86400 * 7;
@@ -26,18 +27,20 @@ export const adminLogin = createServerFn({
   method: "POST",
 })
   .validator((raw) => {
-    if (raw && typeof raw === "object" && "password" in raw) {
-      const p = (raw as { password: unknown }).password;
-      if (typeof p === "string") return { password: p };
+    if (raw && typeof raw === "object" && "username" in raw && "password" in raw) {
+      const value = raw as { username: unknown; password: unknown };
+      if (typeof value.username === "string" && typeof value.password === "string") {
+        return { username: value.username.trim(), password: value.password };
+      }
     }
-    throw new Error("Senha é obrigatória");
+    throw new Error("Usuário e senha são obrigatórios");
   })
   .handler(async ({ data }) => {
-    if (!SESSION_SECRET || !ADMIN_PASSWORD_HASH) {
+    if (!SESSION_SECRET || !ADMIN_USERNAME || !ADMIN_PASSWORD_HASH) {
       throw new Error("Configuração de sessão não encontrada");
     }
-    if (sha256(data.password) !== ADMIN_PASSWORD_HASH) {
-      throw new Error("Senha incorreta");
+    if (data.username !== ADMIN_USERNAME || sha256(data.password) !== ADMIN_PASSWORD_HASH) {
+      throw new Error("Usuário ou senha incorretos");
     }
     setCookie(COOKIE_NAME, makeSessionToken(SESSION_SECRET), getCookieOptions());
     return { success: true };
