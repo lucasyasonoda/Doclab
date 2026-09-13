@@ -194,7 +194,7 @@ function AdminDashboardContent() {
       title: article.title,
       excerpt: article.excerpt,
       category: article.category,
-      readTime: article.read_time ?? "5 min de leitura",
+      readTime: article.readTime ?? "5 min de leitura",
       badge: article.badge ?? "purple",
       author: article.author ?? "Equipe Doc.Lab",
       content: JSON.stringify(article.content ?? [], null, 2),
@@ -218,7 +218,7 @@ function AdminDashboardContent() {
       <header className="border-b border-white/10 bg-navy-dark/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
           <div className="flex items-center gap-3">
-            <Link to="/admin/" className="flex items-center gap-2.5">
+            <Link to="/admin" className="flex items-center gap-2.5">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-cyan to-purple font-display text-sm font-bold text-white">
                 DL
               </span>
@@ -427,7 +427,7 @@ function AdminDashboardContent() {
                           <span className={`badge badge-${article.badge ?? "purple"}`}>
                             {article.badge}
                           </span>
-                          <span className="text-xs text-white/50">{article.read_time}</span>
+                          <span className="text-xs text-white/50">{article.readTime}</span>
                         </div>
                         <h3 className="truncate font-display text-base font-semibold text-white">
                           {article.title}

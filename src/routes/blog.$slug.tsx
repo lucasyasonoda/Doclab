@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
 import { getSupabaseServer } from "@/lib/supabase-server";
-import { BLOG_ARTICLES } from "@/content/site";
+import { BLOG_ARTICLES, normalizeBlogArticle } from "@/content/site";
 import type { BlogArticle } from "@/content/site";
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/blog/$slug")({
         .maybeSingle();
 
       if (error || !data) throw notFound();
-      return data as BlogArticle;
+      return normalizeBlogArticle(data as Record<string, unknown>);
     } catch {
       // Fallback durante build ou se Supabase indisponível:
       const article = BLOG_ARTICLES.find((a) => a.slug === params.slug);
@@ -50,8 +50,8 @@ function BlogArticle() {
             {article.title}
           </h1>
           <p className="mt-4 text-sm text-gray-500">
-            {article.read_time}
-            {article.published_label ? ` · ${article.published_label}` : ""}
+            {article.readTime}
+            {article.publishedLabel ? ` · ${article.publishedLabel}` : ""}
             {article.author ? ` · Por ${article.author}` : ""}
           </p>
         </Reveal>

@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
 import { getSupabaseServer } from "@/lib/supabase-server";
-import { BLOG_ARTICLES } from "@/content/site";
+import { BLOG_ARTICLES, normalizeBlogArticle } from "@/content/site";
 import type { BlogArticle } from "@/content/site";
 
 export const Route = createFileRoute("/blog/")({
@@ -18,7 +18,11 @@ export const Route = createFileRoute("/blog/")({
       if (error) throw error;
       // Se o banco estiver vazio ou indisponível, mantém os artigos estáticos
       // (lembrete: sem isso a página fica em branco assim que a tabela existe)
-      if (data && data.length > 0) return data as BlogArticle[];
+      if (data && data.length > 0) {
+        return data.map((row) =>
+          normalizeBlogArticle(row as Record<string, unknown>),
+        ) as BlogArticle[];
+      }
       return BLOG_ARTICLES;
     } catch {
       // Fallback: usa dados estáticos durante build ou se Supabase indisponível
@@ -161,7 +165,7 @@ function Blog() {
             >
               <div className="flex items-center justify-between gap-3">
                 <span className={`badge badge-${article.badge}`}>{article.category}</span>
-                <span className="text-xs text-gray-500">{article.read_time}</span>
+                <span className="text-xs text-gray-500">{article.readTime}</span>
               </div>
               <h3 className="mt-4 flex-1 font-display text-lg font-semibold leading-snug text-navy">
                 {article.slug ? (

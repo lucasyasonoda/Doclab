@@ -473,6 +473,7 @@ export const TEAM: TeamMember[] = [
 ];
 
 export type BlogArticle = {
+  id?: number;
   slug: string;
   badge: "cyan" | "purple";
   category: string;
@@ -481,9 +482,26 @@ export type BlogArticle = {
   excerpt: string;
   publishedLabel?: string;
   author?: string;
+  published?: boolean;
   external?: boolean; // links straight to /orcamento (not yet written)
   content?: { heading?: string; paragraphs?: string[]; list?: string[]; callout?: string }[];
 };
+
+export function normalizeBlogArticle(row: Record<string, unknown>): BlogArticle {
+  return {
+    id: typeof row.id === "number" ? row.id : undefined,
+    slug: typeof row.slug === "string" ? row.slug : "",
+    badge: row.badge === "cyan" ? "cyan" : "purple",
+    category: typeof row.category === "string" ? row.category : "",
+    readTime: typeof row.read_time === "string" ? row.read_time : "5 min de leitura",
+    title: typeof row.title === "string" ? row.title : "",
+    excerpt: typeof row.excerpt === "string" ? row.excerpt : "",
+    publishedLabel: typeof row.published_label === "string" ? row.published_label : undefined,
+    author: typeof row.author === "string" ? row.author : undefined,
+    published: typeof row.published === "boolean" ? row.published : undefined,
+    content: Array.isArray(row.content) ? row.content : [],
+  };
+}
 
 export const BLOG_ARTICLES: BlogArticle[] = [
   {
