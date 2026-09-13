@@ -32,7 +32,7 @@ export function AdminLoginPage() {
       });
       setLoading(false);
       if (result.success) {
-        window.location.href = "/admin/";
+        window.location.href = "/admin";
         return;
       }
       setError("Não deu certo. Tente novamente.");
