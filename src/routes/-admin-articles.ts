@@ -2,7 +2,12 @@ import { createServerFn } from "@tanstack/react-start";
 import { getSupabaseServer } from "@/lib/supabase-server";
 import { sendNewsletterToAllSubscribers } from "./-send-newsletter";
 import { requireAdminSession } from "./-admin-auth";
-import type { BlogArticle } from "@/content/site";
+import { normalizeBlogArticle, type BlogArticle } from "@/content/site";
+
+export type AdminArticle = BlogArticle & {
+  id: number;
+  published: boolean;
+};
 
 export const getAdminArticles = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdminSession();
@@ -11,7 +16,12 @@ export const getAdminArticles = createServerFn({ method: "GET" }).handler(async 
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return (data ?? []) as BlogArticle[];
+  return (data ?? [])
+    .map((row) => normalizeBlogArticle(row as Record<string, unknown>))
+    .filter(
+      (article): article is AdminArticle =>
+        typeof article.id === "number" && typeof article.published === "boolean",
+    );
 });
 
 export const createArticle = createServerFn({ method: "POST" })

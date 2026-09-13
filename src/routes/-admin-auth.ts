@@ -13,7 +13,7 @@ function sha256(str: string): string {
   return createHash("sha256").update(str).digest("hex");
 }
 
-function getCookieOptions() {
+function getCookieOptions(): Parameters<typeof setCookie>[2] {
   return {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

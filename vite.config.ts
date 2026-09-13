@@ -36,7 +36,6 @@ export default defineConfig({
         enabled: true,
         crawlLinks: false,
         failOnError: false,
-        exclude: ["/admin", "/admin/login"],
       },
     }),
     viteReact(),

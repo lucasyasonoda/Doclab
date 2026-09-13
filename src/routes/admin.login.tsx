@@ -20,18 +20,22 @@ export function AdminLoginPage() {
     setError("");
     setLoading(true);
 
+    // Lê sempre do DOM: o autofill do navegador não dispara onChange,
+    // então o state React pode divergir do que está visível no campo.
     const loginUsername = usernameRef.current?.value.trim() ?? username.trim();
     const loginPassword = passwordRef.current?.value ?? password;
-    setServiceError(false);
+
     try {
+      setServiceError(false);
       const result = await adminLogin({
         data: { username: loginUsername, password: loginPassword },
       });
+      setLoading(false);
       if (result.success) {
         window.location.href = "/admin/";
-      } else {
-        setError("Não deu certo. Tente novamente.");
+        return;
       }
+      setError("Não deu certo. Tente novamente.");
     } catch (err) {
       const msg =
         err && typeof err === "object" && "message" in err
@@ -45,7 +49,6 @@ export function AdminLoginPage() {
       } else {
         setError(msg || "Erro ao fazer login.");
       }
-    } finally {
       setLoading(false);
     }
   }
@@ -102,6 +105,7 @@ export function AdminLoginPage() {
               ref={passwordRef}
               id="admin-password"
               type="password"
+              autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}

@@ -64,7 +64,9 @@ function ServiceBlock({ service, index }: { service: ServiceItem; index: number 
           delay={2}
           aria-hidden
           className="relative flex aspect-[4/3] items-center justify-center rounded-3xl bg-gray-50/50 m-0"
-        />
+        >
+          <span className="sr-only">Ilustração dos serviços da Doc.Lab</span>
+        </Reveal>
       </div>
     </section>
   );

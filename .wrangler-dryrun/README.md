@@ -1,0 +1,1 @@
+This folder contains the built output assets for the worker "doclab" generated at 2026-09-13T14:05:05.668Z.
