@@ -32,6 +32,17 @@ export const NAV_LINKS = [
   { to: "/contato", label: "Contato" },
 ];
 
+// Categorias disponíveis no blog. Usadas pelo dropdown do painel administrativo
+// e pelos rótulos exibidos no site. Para adicionar uma nova, basta incluir aqui.
+export const BLOG_CATEGORIES = [
+  "Marketing Médico",
+  "Ética e Legislação",
+  "Gestão de Consultório",
+  "Tendências",
+] as const;
+
+export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
+
 export type Differential = { title: string; body: string };
 
 export const DIFFERENTIALS: Differential[] = [
@@ -472,6 +483,15 @@ export const TEAM: TeamMember[] = [
   },
 ];
 
+export type ContentBlock = {
+  /** HTML escrito no painel administrativo (formato novo). */
+  html?: string;
+  heading?: string;
+  paragraphs?: string[];
+  list?: string[];
+  callout?: string;
+};
+
 export type BlogArticle = {
   id?: number;
   slug: string;
@@ -484,7 +504,7 @@ export type BlogArticle = {
   author?: string;
   published?: boolean;
   external?: boolean; // links straight to /orcamento (not yet written)
-  content?: { heading?: string; paragraphs?: string[]; list?: string[]; callout?: string }[];
+  content?: ContentBlock[];
 };
 
 export function normalizeBlogArticle(row: Record<string, unknown>): BlogArticle {
