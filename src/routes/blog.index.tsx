@@ -2,33 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
-import { getSupabaseServer } from "@/lib/supabase-server";
-import { BLOG_ARTICLES, normalizeBlogArticle } from "@/content/site";
-import type { BlogArticle } from "@/content/site";
+import { getPublishedArticles } from "./-blog-articles";
 
 export const Route = createFileRoute("/blog/")({
-  loader: async () => {
-    try {
-      const { data, error } = await getSupabaseServer()
-        .from("blog_articles")
-        .select("*")
-        .eq("published", true)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      // Se o banco estiver vazio ou indisponível, mantém os artigos estáticos
-      // (lembrete: sem isso a página fica em branco assim que a tabela existe)
-      if (data && data.length > 0) {
-        return data.map((row) =>
-          normalizeBlogArticle(row as Record<string, unknown>),
-        ) as BlogArticle[];
-      }
-      return BLOG_ARTICLES;
-    } catch {
-      // Fallback: usa dados estáticos durante build ou se Supabase indisponível
-      return BLOG_ARTICLES;
-    }
-  },
+  loader: async () => getPublishedArticles(),
   head: () => ({
     meta: [
       { title: "Blog — Doc.Lab" },

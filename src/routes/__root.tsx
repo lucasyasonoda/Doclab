@@ -201,7 +201,6 @@ function RootShell({ children }: { children: ReactNode }) {
                 };
                 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
                 else boot();
-                new MutationObserver(boot).observe(document.body, { childList: true, subtree: true });
               })();
             `,
           }}

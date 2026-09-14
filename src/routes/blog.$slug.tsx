@@ -1,26 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
-import { getSupabaseServer } from "@/lib/supabase-server";
-import { BLOG_ARTICLES, normalizeBlogArticle } from "@/content/site";
-import type { BlogArticle } from "@/content/site";
+import { getArticleBySlug } from "./-blog-articles";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    try {
-      const { data, error } = await getSupabaseServer()
-        .from("blog_articles")
-        .select("*")
-        .eq("slug", params.slug)
-        .maybeSingle();
-
-      if (error || !data) throw notFound();
-      return normalizeBlogArticle(data as Record<string, unknown>);
-    } catch {
-      // Fallback durante build ou se Supabase indisponível:
-      const article = BLOG_ARTICLES.find((a) => a.slug === params.slug);
-      if (!article) throw notFound();
-      return article;
-    }
+    const article = await getArticleBySlug({ data: { slug: params.slug } });
+    if (!article) throw notFound();
+    return article;
   },
   head: ({ loaderData }) => ({
     meta: loaderData
@@ -61,32 +47,41 @@ function BlogArticle() {
       {hasContent && (
         <section className="bg-white py-16">
           <Reveal as="div" className="container-edit prose-doclab max-w-3xl">
-            {article.content?.map((block, i) => (
-              <div key={block.heading ?? i} className="mb-8 last:mb-0">
-                {block.heading && (
-                  <h2 className="mb-4 font-display text-xl font-bold text-navy md:text-2xl">
-                    {block.heading}
-                  </h2>
-                )}
-                {block.paragraphs?.map((p) => (
-                  <p key={p.slice(0, 30)} className="mb-4 leading-relaxed text-gray-700">
-                    {p}
-                  </p>
-                ))}
-                {block.list && (
-                  <ul className="mb-4 list-disc space-y-2 pl-6 text-gray-700" role="list">
-                    {block.list.map((item) => (
-                      <li key={item.slice(0, 30)}>{item}</li>
-                    ))}
-                  </ul>
-                )}
-                {block.callout && (
-                  <div className="rounded-xl border-l-4 border-cyan bg-cyan/5 p-5 text-sm text-navy">
-                    {block.callout}
-                  </div>
-                )}
-              </div>
-            ))}
+            {article.content?.map((block, i) =>
+              // Bloco em HTML escrito pelo painel administrativo.
+              typeof block.html === "string" ? (
+                <div
+                  key={`html-${i}`}
+                  className="mb-8 last:mb-0"
+                  dangerouslySetInnerHTML={{ __html: block.html }}
+                />
+              ) : (
+                <div key={block.heading ?? i} className="mb-8 last:mb-0">
+                  {block.heading && (
+                    <h2 className="mb-4 font-display text-xl font-bold text-navy md:text-2xl">
+                      {block.heading}
+                    </h2>
+                  )}
+                  {block.paragraphs?.map((p) => (
+                    <p key={p.slice(0, 30)} className="mb-4 leading-relaxed text-gray-700">
+                      {p}
+                    </p>
+                  ))}
+                  {block.list && (
+                    <ul className="mb-4 list-disc space-y-2 pl-6 text-gray-700" role="list">
+                      {block.list.map((item) => (
+                        <li key={item.slice(0, 30)}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {block.callout && (
+                    <div className="rounded-xl border-l-4 border-cyan bg-cyan/5 p-5 text-sm text-navy">
+                      {block.callout}
+                    </div>
+                  )}
+                </div>
+              ),
+            )}
           </Reveal>
         </section>
       )}
