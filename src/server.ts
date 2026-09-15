@@ -7,6 +7,25 @@ type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
 
+/**
+ * No Cloudflare os secrets chegam no objeto `env` do Worker, NÃO em
+ * `process.env` — o runtime não popula process.env com os bindings. Como o
+ * código do servidor lê `process.env.ADMIN_USERNAME` etc., copiamos os valores
+ * do `env` para `process.env` antes de atender a requisição.
+ *
+ * Em desenvolvimento (vite dev / wrangler dev com .env) isso é inofensivo:
+ * só preenche chaves que ainda não existem.
+ */
+function hydrateProcessEnv(env: unknown) {
+  if (!env || typeof env !== "object") return;
+  if (typeof process === "undefined" || !process.env) return;
+
+  for (const [key, value] of Object.entries(env as Record<string, unknown>)) {
+    if (typeof value !== "string") continue;
+    if (process.env[key] === undefined) process.env[key] = value;
+  }
+}
+
 let serverEntryPromise: Promise<ServerEntry> | undefined;
 
 async function getServerEntry(): Promise<ServerEntry> {
@@ -40,6 +59,7 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      hydrateProcessEnv(env);
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
