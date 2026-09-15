@@ -8,5 +8,18 @@
   "assets": {
     "directory": "./dist/client",
     "binding": "ASSETS"
-  }
+  },
+
+  // ATENÇÃO: os valores NÃO devem ser preenchidos aqui (este arquivo vai para o
+  // repositório). Em produção, cadastre cada um como secret do Worker:
+  //
+  //   npx wrangler secret put SESSION_SECRET
+  //   npx wrangler secret put ADMIN_USERNAME
+  //   npx wrangler secret put ADMIN_PASSWORD_HASH
+  //   npx wrangler secret put SUPABASE_SERVICE_KEY
+  //   npx wrangler secret put VITE_SUPABASE_URL
+  //
+  // Sem elas o login falha com "Configuração de sessão não encontrada", porque
+  // o arquivo .env NÃO é enviado no deploy.
+  "vars": {}
 }
